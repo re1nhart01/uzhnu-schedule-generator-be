@@ -1,0 +1,1 @@
+# uzhnu-schedule-generator-be
