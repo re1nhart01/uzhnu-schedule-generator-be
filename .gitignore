@@ -176,5 +176,5 @@ cython_debug/
 # Mine
 .env
 .DS_Store
-app/creds/*
 cloud-sql-proxy
+creds/*

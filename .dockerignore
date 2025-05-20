@@ -4,4 +4,3 @@ venv
 .git
 .DS_Store
 cloud-sql-proxy
-alembic/*
