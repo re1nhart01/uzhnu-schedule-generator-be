@@ -24,6 +24,7 @@ module.exports = {
         "react/display-name": "off",
         "no-undef": "off",
         "no-shadow": "off",
+        "@typescript-eslint/no-require-imports": "off",
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/no-shadow": ["off"],
         "@typescript-eslint/no-unused-vars": [
