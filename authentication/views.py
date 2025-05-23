@@ -1,9 +1,14 @@
+from django.http import HttpResponseRedirect
 from common.services.google import GoogleService
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView, Response
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema
+import dotenv
+import os
+
+dotenv.load_dotenv()
 
 @extend_schema(auth=[], responses={200: dict})
 class AuthenticateWithGoogleView(APIView):
@@ -48,7 +53,8 @@ class GoogleCallbackView(APIView):
             user.set_unusable_password()
             user.save()
         tokens = self._get_jwt_tokens(user)
-        return Response(tokens, status=200)
+        print(tokens)
+        return HttpResponseRedirect(os.getenv("CORS_ALLOWED_ORIGIN") + f"/google?access={tokens['access']}&refresh={tokens['refresh']}")
 
 
     def _get_jwt_tokens(self, user):
