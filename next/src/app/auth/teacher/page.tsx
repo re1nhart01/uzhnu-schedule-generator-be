@@ -1,14 +1,28 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { CircleUserRound } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useGoogleAuthStore } from "@/store/google-auth.store";
+import { CircleUserRound } from "lucide-react";
+import { useEffect } from "react";
 
 export default function LoginPage() {
-  const handleGoogleLogin = () => {
-    // TODO: Реальна авторизація через Google
-    alert('Google Sign-In (має бути інтегровано через next-auth або Firebase)')
-  }
+  const { loading, redirectUrl, getRedirectUrl } = useGoogleAuthStore();
+  const handleGoogleLogin = async () => {
+    await getRedirectUrl();
+  };
+
+  useEffect(() => {
+    if (redirectUrl?.startsWith("https://")) {
+      document.location.href = redirectUrl;
+    }
+  }, [redirectUrl]);
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
@@ -33,5 +47,5 @@ export default function LoginPage() {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

@@ -12,7 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d891aafb-8bc6-4312-ab77-af9e64583e73" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/google/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,10 +24,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="JavaScript File" />
         <option value="TypeScript File" />
         <option value="CSS File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -144,7 +144,7 @@
       <workItem from="1747773311399" duration="121000" />
       <workItem from="1747773443058" duration="161000" />
       <workItem from="1748022516658" duration="168000" />
-      <workItem from="1748024160311" duration="717000" />
+      <workItem from="1748024160311" duration="958000" />
     </task>
     <servers />
   </component>

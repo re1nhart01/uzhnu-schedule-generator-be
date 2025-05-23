@@ -4,7 +4,6 @@ import { defaultTo, equals, isNil } from "ramda";
 
 import { APIErrorsResponse, type IRequester } from "./requestor.type";
 import { GetUserTokenResponseDTO } from "@/types";
-import { tokensCacheStore } from "../caching";
 import { sleep } from "@/helpers/functions";
 
 export let promiseTimeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -36,23 +35,21 @@ export const requester = async <P, T = unknown>(
   headers?: IRequester["headers"],
   data?: T,
   withRefreshing = true,
-  baseURL?: string
+  baseURL?: string,
 ): Promise<AxiosResponse<P>> => {
   /*
    * Get current credentials and log request in metro
    */
-  const { refresh_token, access_token } = await tokensCacheStore.take();
   if (false) {
     console.log(
       `${method} REQUEST: ${url.substring(
         0,
-        90
+        90,
       )} AT ${new Date().toDateString()}. REFRESH? ${
         Date.now() >= defaultTo(0, 0)
       }
        TIMESTAMP: ${0},
-       TOKEN START: ${refresh_token?.substring(0, 40)}
-      `
+      `,
     );
   }
 
@@ -67,7 +64,6 @@ export const requester = async <P, T = unknown>(
       baseURL,
       headers: {
         ...(isNil(headers) ? {} : headers),
-        Authorization: `Bearer ${access_token}`,
       },
     });
   } catch (err) {
@@ -82,13 +78,6 @@ export const requester = async <P, T = unknown>(
       ) {
         try {
           if (withRefreshing) {
-            await requestNewTokens(refresh_token);
-
-            const currentAccessToken = (await tokensCacheStore.take())
-              .access_token;
-            /*
-             * If tokens request is success, then re-request with new credentials
-             */
             if (promiseTimeoutId !== null) {
               clearTimeout(promiseTimeoutId);
             }
@@ -107,7 +96,6 @@ export const requester = async <P, T = unknown>(
               baseURL,
               headers: {
                 ...(isNil(headers) ? {} : headers),
-                Authorization: `Bearer ${currentAccessToken}`,
               },
             });
           }
@@ -120,7 +108,7 @@ export const requester = async <P, T = unknown>(
               errToken?.response &&
               equals(
                 errToken?.response?.status,
-                APIErrorsResponse.invalid_token
+                APIErrorsResponse.invalid_token,
               )
             ) {
               await handleApplicationLogout();
@@ -147,16 +135,11 @@ async function requestNewTokens(refresh_token: string | null) {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
   }
   const { data: refreshData } = await refreshTokenRequest.promise;
   refreshTokenRequest.access_token = refreshData.access_token;
-  await tokensCacheStore.getAndSetTokenData(refreshData);
 }
 
-
-
-const handleApplicationLogout = async () => {
-
-}
+const handleApplicationLogout = async () => {};

@@ -1,12 +1,17 @@
 import { BaseCacheStorage } from "./BaseCacheStorage";
 
 const MAX_LIMIT = 1000;
+
 export class AsyncStorageCache<
-  T extends string = string
+  T extends string = string,
 > extends BaseCacheStorage<T, typeof localStorage, string> {
   constructor() {
-    super(MAX_LIMIT, localStorage);
+    if (typeof window === "undefined") {
+      throw new Error("AsyncStorageCache can only be used in the browser");
+    }
+    super(MAX_LIMIT, window.localStorage);
   }
+
   public override async addItem(key: string, data: string): Promise<void> {
     await this._store.setItem(key, data);
   }
@@ -19,7 +24,7 @@ export class AsyncStorageCache<
     return key;
   }
 
-  public override async removeAll() {
+  public override async removeAll(): Promise<void> {
     await this._store.clear();
   }
 

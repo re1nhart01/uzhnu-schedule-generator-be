@@ -1,28 +1,28 @@
-import type { AxiosRequestHeaders } from "axios";
-import axios from "axios";
+import axios, { type AxiosRequestHeaders } from "axios";
 import { assoc, defaultTo, isNil, pipe } from "ramda";
 
-// import store from "store/store";
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
+console.log("API Base URL:", process.env.NEXT_PUBLIC_API_URL);
 
-axios.defaults.baseURL = process.env.BASE_URL;
 let counterToLogout = 0;
 const maxCountToLogout = 2;
 
 type AxiosCustomHeaderType = Record<"Authorization", string> &
   Omit<
-    Record<"Content-Type", string | RegExpExecArray> &
-      Omit<AxiosRequestHeaders, "Content-Type">,
+    Record<"Content-Type", string> & Omit<AxiosRequestHeaders, "Content-Type">,
     "Authorization"
   >;
 
 export const newAbortSignal = (timeoutMs: number) => {
+  if (typeof window === "undefined") return undefined; // SSR-safe
   const abortController = new AbortController();
   setTimeout(() => abortController.abort(), timeoutMs || 0);
   return abortController.signal;
 };
 
 axios.interceptors.request.use(
-  async (config) => {
+  (config) => {
+
     const access_token = "";
     if (access_token && isNil(config.headers?.Authorization)) {
       (<AxiosCustomHeaderType>config.headers) = pipe(
@@ -34,13 +34,12 @@ axios.interceptors.request.use(
       )(config.headers);
     }
 
-    return assoc(
-      "signal",
-      defaultTo(newAbortSignal(15000), config.signal),
-      config
-    );
+    return {
+      ...config,
+      signal: defaultTo(newAbortSignal(15000), config.signal),
+    };
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axios.interceptors.response.use(
@@ -49,7 +48,12 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-
+    if (error?.response?.status === 401) {
+      counterToLogout++;
+      if (counterToLogout >= maxCountToLogout) {
+        // Optional logout or redirect
+      }
+    }
     return Promise.reject(error);
-  }
+  },
 );
