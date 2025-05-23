@@ -12,10 +12,9 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends(
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
     "plugin:storybook/recommended",
     "next/core-web-vitals",
-    "next"
+    "next",
   ),
   {
     ignores: ["**/*/generated/*"],
