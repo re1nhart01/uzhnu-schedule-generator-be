@@ -12,7 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d891aafb-8bc6-4312-ab77-af9e64583e73" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/app/teacher-dashboard/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +57,7 @@
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
     "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/home/evgeniy/Documents/GitHub/uzhnu-schedule-generator-be/next",
+    "last_opened_file_path": "/home/evgeniy/Documents/GitHub/uzhnu-schedule-generator-be",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -67,6 +68,9 @@
     "nodejs_package_manager_path": "yarn",
     "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
     "org.rust.first.attach.projects": "true",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
     "ts.external.directory.path": "/snap/intellij-idea-ultimate/604/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
@@ -140,6 +144,7 @@
       <workItem from="1747773311399" duration="121000" />
       <workItem from="1747773443058" duration="161000" />
       <workItem from="1748022516658" duration="168000" />
+      <workItem from="1748024160311" duration="717000" />
     </task>
     <servers />
   </component>
