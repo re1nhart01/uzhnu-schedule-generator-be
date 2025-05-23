@@ -7,13 +7,13 @@ import Link from "next/link";
 import {ThemeToggle} from "@/components/theme-toggle/theme-toggle";
 
 
-type headerProps = {};
+type headerProps = object;
 
 export const Header: FC<headerProps> = () => {
     const [lang, setLang] = useState('uk')
 
     return (
-        <header className="bg-background border-b px-6 py-4 flex items-center justify-between">
+        <header className={`bg-background border-b px-6 py-4 flex items-center justify-between h-[${HEADER_HEIGHT}px]`}>
       <div className="flex flex-row items-center gap-8">
         <Link href="/" className="text-xl font-bold text-foreground">Розклад</Link>
         <Link href="/about" className="hover:underline text-sm text-muted-foreground">Вхід для викладача</Link>

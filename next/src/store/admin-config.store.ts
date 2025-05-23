@@ -1,17 +1,12 @@
-import {createStore} from "zustand";
+import {createStore,  } from "zustand";
 
 
-type adminConfigStoreType = {
-
-}
+type adminConfigStoreType = unknown
 
 
-const useAdminConfigStore = createStore<adminConfigStoreType>((setState, getState, store) => ({
-
+const useAdminConfigStore = createStore<adminConfigStoreType>((set, getState, store) => ({
     blocks: [],
     addBlock: () => set((state) => {
-        const newBlock: = {
 
-        }
     })
 }));

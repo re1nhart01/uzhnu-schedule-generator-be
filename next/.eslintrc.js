@@ -24,24 +24,13 @@ module.exports = {
         "react/display-name": "off",
         "no-undef": "off",
         "no-shadow": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-require-imports": "off",
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/no-shadow": ["off"],
-        "@typescript-eslint/no-unused-vars": [
-          "error",
-          /**
-           * See: https://typescript-eslint.io/rules/no-unused-vars/#options
-           */
-          {
-            args: "after-used",
-            argsIgnorePattern: "^_",
-            caughtErrors: "none", // Codebase is riddled with unused caught errors.
-            destructuredArrayIgnorePattern: "^_",
-            varsIgnorePattern: "^_",
-            ignoreRestSiblings: true,
-          },
-        ],
         "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-unsafe-declaration-merging": "off",
         quotes: ["error", "double"],
         "simple-import-sort/imports": [
           "error",
