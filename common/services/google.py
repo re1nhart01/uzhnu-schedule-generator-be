@@ -12,11 +12,11 @@ class GoogleService(Oauth2Provider):
         super().__init__(
             client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
             client_id=os.getenv("GOOGLE_CLIENT_ID"),
-            auth_redirect_uri="http://localhost:8000/api/auth/google/callback",
-            register_redirect_uri="http://localhost:8000/api/auth/google/callback",
-            auth_url="https://accounts.google.com/o/oauth2/auth",
-            user_info_url="https://www.googleapis.com/oauth2/v1/userinfo",
-            token_url="https://accounts.google.com/o/oauth2/token",
+            auth_redirect_uri=os.getenv("AUTH_REDIRECT_URI"),
+            register_redirect_uri=os.getenv("REGISTER_REDIRECT_URI"),
+            auth_url=os.getenv("AUTH_URI"),
+            user_info_url=os.getenv("USER_INFO_URI"),
+            token_url=os.getenv("TOKEN_URI"),
             scopes=SCOPES
         )
 

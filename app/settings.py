@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3001",
+    os.getenv("CORS_ALLOWED_ORIGIN"),
 ]
 
 CORS_ALLOW_METHODS = (
