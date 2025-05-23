@@ -6,4 +6,12 @@ type adminConfigStoreType = {
 }
 
 
-const useAdminConfigStore = createStore<adminConfigStoreType>
+const useAdminConfigStore = createStore<adminConfigStoreType>((setState, getState, store) => ({
+
+    blocks: [],
+    addBlock: () => set((state) => {
+        const newBlock: = {
+
+        }
+    })
+}));
