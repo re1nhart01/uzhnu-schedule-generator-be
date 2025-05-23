@@ -66,8 +66,8 @@ RUN poetry install
 WORKDIR /app
 COPY . .
 
-COPY app/creds/postgres-iam-creds.json /creds/postgres-iam-creds.json
-ENV GOOGLE_APPLICATION_CREDENTIALS=/creds/postgres-iam-creds.json
+# COPY app/creds/postgres-iam-creds.json /creds/postgres-iam-creds.json
+# ENV GOOGLE_APPLICATION_CREDENTIALS=/creds/postgres-iam-creds.json
 
 # Run cloud-sql-proxy in the background
 
@@ -75,4 +75,4 @@ ENV PORT=8000
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
