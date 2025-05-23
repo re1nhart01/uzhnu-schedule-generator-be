@@ -5,18 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c89b0ad9-23c7-43aa-ac24-743542426ade" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/next/src/app/google/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/next/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/next/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next/src/app/auth/teacher/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/auth/teacher/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next/src/app/google/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/google/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next/src/app/teacher/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/teacher/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next/src/components/header/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/components/header/header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next/src/services/caching/content/primitives/AsyncStorageCache.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/services/caching/content/primitives/AsyncStorageCache.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/services/http/axios.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/services/http/axios.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/services/http/requestor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/services/http/requestor.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next/src/services/caching/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/services/caching/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next/src/store/google-auth.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/store/google-auth.store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/next/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +100,7 @@
       <updated>1747765319118</updated>
       <workItem from="1747765320278" duration="310000" />
       <workItem from="1748024279557" duration="1048000" />
-      <workItem from="1748025724294" duration="3334000" />
+      <workItem from="1748025724294" duration="4634000" />
     </task>
     <servers />
   </component>

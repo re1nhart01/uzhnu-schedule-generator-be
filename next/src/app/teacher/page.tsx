@@ -1,33 +1,52 @@
 // app/teacher/unavailable/page.tsx
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useGoogleAuthStore } from "@/store/google-auth.store";
 
-const days = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'Пʼятниця', 'Субота']
-const hours = ['8:00 - 9:30', '9:45 - 11:15', '11:30 - 13:00', '13:15 - 14:45', '15:00 - 16:30']
+const days = [
+  "Понеділок",
+  "Вівторок",
+  "Середа",
+  "Четвер",
+  "Пʼятниця",
+  "Субота",
+];
+const hours = [
+  "8:00 - 9:30",
+  "9:45 - 11:15",
+  "11:30 - 13:00",
+  "13:15 - 14:45",
+  "15:00 - 16:30",
+];
 
 export default function TeacherUnavailabilityPage() {
-  const [unavailable, setUnavailable] = useState<Record<string, string[]>>({})
+  const [unavailable, setUnavailable] = useState<Record<string, string[]>>({});
+  const { getWhoami } = useGoogleAuthStore();
 
   const toggleUnavailable = (day: string, hour: string) => {
     setUnavailable((prev) => {
-      const current = prev[day] || []
+      const current = prev[day] || [];
       return {
         ...prev,
         [day]: current.includes(hour)
           ? current.filter((h) => h !== hour)
-          : [...current, hour]
-      }
-    })
-  }
+          : [...current, hour],
+      };
+    });
+  };
+
+  useEffect(() => {
+    getWhoami().then();
+  }, []);
 
   const handleSave = () => {
-    console.log('Unavailable slots:', unavailable)
-    alert('Непридатні години збережено (поки в консолі)')
-  }
+    console.log("Unavailable slots:", unavailable);
+    alert("Непридатні години збережено (поки в консолі)");
+  };
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4 space-y-6">
@@ -56,10 +75,12 @@ export default function TeacherUnavailabilityPage() {
           </div>
 
           <div className="pt-6">
-            <Button onClick={handleSave} className="w-full">Зберегти</Button>
+            <Button onClick={handleSave} className="w-full">
+              Зберегти
+            </Button>
           </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

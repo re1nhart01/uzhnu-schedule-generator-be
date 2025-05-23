@@ -14,6 +14,7 @@ import { useEffect } from "react";
 
 export default function LoginPage() {
   const { loading, redirectUrl, getRedirectUrl } = useGoogleAuthStore();
+
   const handleGoogleLogin = async () => {
     await getRedirectUrl();
   };

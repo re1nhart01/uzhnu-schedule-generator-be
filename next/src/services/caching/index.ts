@@ -16,13 +16,13 @@ export const currentCacheCluster = (id: string) =>
     },
     storage: {
       getString(key: string) {
-        return localStorage.getItem(key);
+        return sessionStorage.getItem(key);
       },
       delete(key: string) {
-        return localStorage.removeItem(key);
+        return sessionStorage.removeItem(key);
       },
       set(key: string, data: unknown) {
-        return localStorage.setItem(key, JSON.stringify(data));
+        return sessionStorage.setItem(key, JSON.stringify(data));
       },
     },
   });

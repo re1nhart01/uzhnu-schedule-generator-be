@@ -4,12 +4,12 @@ const MAX_LIMIT = 1000;
 
 export class AsyncStorageCache<
   T extends string = string,
-> extends BaseCacheStorage<T, typeof localStorage, string> {
+> extends BaseCacheStorage<T, typeof sessionStorage, string> {
   constructor() {
     if (typeof window === "undefined") {
       throw new Error("AsyncStorageCache can only be used in the browser");
     }
-    super(MAX_LIMIT, window.localStorage);
+    super(MAX_LIMIT, window.sessionStorage);
   }
 
   public override async addItem(key: string, data: string): Promise<void> {
