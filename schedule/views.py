@@ -29,6 +29,7 @@ class ScheduleResponse(BaseModel):
 
 # API view
 class GenerateScheduleManuallyView(APIView):
+    # permission_classes = [IsAdminUser]
 
     def post(self, request):
         faculties = Faculty.objects.prefetch_related(
@@ -85,10 +86,14 @@ class GenerateScheduleManuallyView(APIView):
         total_slots = days_per_week * lessons_per_day  # 20 слотів на тиждень
 
         # Підготовка даних по класах
+        # Підготовка даних по класах (з faculty_name)
         classes = {}
+        class_to_faculty = {}
         for faculty in data:
+            faculty_name = faculty['faculty_name']
             for cls in faculty['classes']:
                 class_name = cls['class_name']
+                class_to_faculty[class_name] = faculty_name
                 classes[class_name] = []
                 for subj in cls['subjects']:
                     for _ in range(subj['amount_for_class_per_week']):
@@ -96,6 +101,7 @@ class GenerateScheduleManuallyView(APIView):
                             'subject_name': subj['subject_name'],
                             'teacher': subj['teachers'][0]
                         })
+
 
         # Ініціалізація
         schedule = {class_name: [None] * total_slots for class_name in classes}
@@ -151,7 +157,7 @@ class GenerateScheduleManuallyView(APIView):
                 week.append(ScheduleDay(day=day_name, lessons=lessons))
 
             schedule_classes.append(ScheduleClass(
-                faculty="FIT",  # Або: faculty_dict["faculty_name"]
+                faculty=class_to_faculty[class_name],
                 class_name=class_name,
                 week=week,
                 general_amount_of_lessons=len([s for s in slots if s is not None])

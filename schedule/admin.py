@@ -9,3 +9,7 @@ admin.site.register(Faculty)
 admin.site.register(TeacherSubject)
 admin.site.register(ClassSubject)
 admin.site.register(TeacherUnavailableTime)
+
+admin.site.site_title = "Schedule Admin"
+admin.site.site_header = "Schedule Administration"
+admin.site.index_title = "Welcome to the Schedule Admin"
