@@ -1,31 +1,45 @@
-// app/admin/schedule-config/page.tsx
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const groups = ['КН-31', 'КН-32', 'КН-33']
-const days = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'Пʼятниця', 'Субота']
+const groups = ["КН-31", "КН-32", "КН-33"];
+const days = [
+  "Понеділок",
+  "Вівторок",
+  "Середа",
+  "Четвер",
+  "Пʼятниця",
+  "Субота",
+];
 
 export default function ScheduleConfigPage() {
-  const [selectedGroup, setSelectedGroup] = useState(groups[0])
-  const [subjectCount, setSubjectCount] = useState(1)
-  const [selectedDays, setSelectedDays] = useState<string[]>([...days])
+  const [selectedGroup, setSelectedGroup] = useState(groups[0]);
+  const [subjectCount, setSubjectCount] = useState(1);
+  const [selectedDays, setSelectedDays] = useState<string[]>([...days]);
 
   const toggleDay = (day: string) => {
     setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-    )
-  }
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
+    );
+  };
 
   const handleGenerate = () => {
-    alert(`Група: ${selectedGroup}\nПари на тиждень: ${subjectCount}\nДні: ${selectedDays.join(', ')}`)
-  }
+    alert(
+      `Група: ${selectedGroup}\nПари на тиждень: ${subjectCount}\nДні: ${selectedDays.join(", ")}`,
+    );
+  };
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4 space-y-6 min-h-[87vh]">
@@ -42,7 +56,9 @@ export default function ScheduleConfigPage() {
               </SelectTrigger>
               <SelectContent>
                 {groups.map((group) => (
-                  <SelectItem key={group} value={group}>{group}</SelectItem>
+                  <SelectItem key={group} value={group}>
+                    {group}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -82,5 +98,5 @@ export default function ScheduleConfigPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

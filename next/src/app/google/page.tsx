@@ -1,5 +1,6 @@
 "use client";
 
+import { login } from "@/api/set_cookies";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,16 +23,18 @@ export default function GooglePage() {
 
     if (!access || !refresh) {
       router.replace("/");
+      return;
     }
 
-    sessionStorage.setItem(
-      "USER_DATA",
-      JSON.stringify({ access_token: access, refresh_token: refresh }),
-    );
-
-    setTimeout(() => {
-      router.replace("/teacher");
-    }, 1000);
+    login(access, refresh).then(() => {
+      sessionStorage.setItem(
+        "USER_DATA",
+        JSON.stringify({ access_token: access, refresh_token: refresh }),
+      );
+      setTimeout(() => {
+        router.replace("/teacher");
+      }, 1000);
+    });
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 import { requester } from "@/services/http/requestor";
 import { create, createStore } from "zustand";
 import "@/services/http/axios.config";
-import { getDataOutOfReact } from "@/hooks/useUserCredentials";
+import { getUserDataOutOfReact } from "@/hooks/useUserCredentials";
 
 type UserCredentials = {
   email: string;
@@ -17,6 +17,7 @@ type googleAuthStoreModel = {
   userData: UserCredentials | null;
   getRedirectUrl(): Promise<void>;
   getWhoami(): Promise<void>;
+  setNullUserData(): void;
 };
 
 export const useGoogleAuthStore = create<googleAuthStoreModel>(
@@ -44,7 +45,7 @@ export const useGoogleAuthStore = create<googleAuthStoreModel>(
     getWhoami: async () => {
       set({ loading: true });
 
-      const accessToken = getDataOutOfReact()?.access_token;
+      const accessToken = getUserDataOutOfReact()?.access_token;
       if (!accessToken) return;
       try {
         const data = await requester<any>("api/auth/whoami/", "GET", {
@@ -59,5 +60,7 @@ export const useGoogleAuthStore = create<googleAuthStoreModel>(
         console.warn(e);
       }
     },
+    setNullUserData: () =>
+      set({ loading: false, redirectUrl: "", userData: null }),
   }),
 );

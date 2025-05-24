@@ -20,17 +20,22 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle/theme-toggle";
 import { useGoogleAuthStore } from "@/store/google-auth.store";
 import { useRouter } from "next/navigation";
+import { useUserCredentials } from "@/hooks/useUserCredentials";
+import { logout } from "@/api/remove_cookies";
 
 type headerProps = object;
 
 export const Header: FC<headerProps> = () => {
   const [lang, setLang] = useState("uk");
-  const { userData } = useGoogleAuthStore(); // припускаємо, що є функція logout
+  const { userData, setNullUserData } = useGoogleAuthStore();
+  const { removeItems } = useUserCredentials();
   const router = useRouter();
 
-  const handleLogout = () => {
-    // logout?.(); // або очищення localStorage / token
-    router.push("/login");
+  const handleLogout = async () => {
+    await logout();
+    removeItems();
+    setNullUserData();
+    router.push("/");
   };
 
   return (

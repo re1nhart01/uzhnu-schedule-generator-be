@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 
 export const useUserCredentials = () => {
   const [access, setAccess] = useState("");
@@ -13,16 +15,25 @@ export const useUserCredentials = () => {
     }
   }, []);
 
+  const removeItems = useCallback(() => {
+    sessionStorage.removeItem("USER_DATA");
+    setRefresh("");
+    setAccess("");
+  }, []);
+
   return {
     access,
     refresh,
+    removeItems,
   };
 };
 
-export function getDataOutOfReact() {
+export function getUserDataOutOfReact() {
   const data = sessionStorage.getItem("USER_DATA");
   if (data) {
     const { access_token, refresh_token } = JSON.parse(data);
     return { access_token, refresh_token };
   }
+
+  return { access_token: null, refresh_token: null };
 }
