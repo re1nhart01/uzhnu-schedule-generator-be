@@ -20,6 +20,11 @@ class Faculty(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "Faculties"
+        ordering = ['name']
+
+
 class Class(models.Model):
     name = models.CharField(max_length=100, unique=True)
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
@@ -29,6 +34,10 @@ class Class(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "Classes"
+        ordering = ['name']
+
 class TeacherSubject(models.Model):
     teacher = models.ForeignKey(user_model, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -37,6 +46,7 @@ class TeacherSubject(models.Model):
 
     def __str__(self):
         return f"{self.teacher.first_name} {self.teacher.last_name} - {self.subject.name}"
+
 
 class ClassSubject(models.Model):
     class_name = models.ForeignKey(Class, on_delete=models.CASCADE)
@@ -57,3 +67,12 @@ class TeacherUnavailableTime(models.Model):
 
     def __str__(self):
         return f"{self.teacher.username} - {self.start_time} to {self.end_time}"
+
+    class Meta:
+        verbose_name_plural = "Teacher Unavailable Times"
+
+class Schedule(models.Model):
+    json_data = models.JSONField()
+    generated_by = models.ForeignKey(user_model, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
