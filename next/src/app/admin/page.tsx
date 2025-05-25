@@ -18,17 +18,6 @@ import { ScheduleView } from "@/components/schedule-view/ScheduleView";
 import { MOCK_SCHEDULE } from "@/mock/MOCK_SCHEDULE";
 import { useScheduleStore } from "@/store/schedules.store";
 import { DnDScheduleView } from "@/components/dnd-schedule-view/DnDScheduleView";
-import { injectIds } from "@/helpers/functions";
-
-const groups = ["КН-31", "КН-32", "КН-33"];
-const days = [
-  "Понеділок",
-  "Вівторок",
-  "Середа",
-  "Четвер",
-  "Пʼятниця",
-  "Субота",
-];
 
 export default function ScheduleConfigPage() {
   const router = useRouter();
@@ -72,7 +61,18 @@ export default function ScheduleConfigPage() {
             <Button onClick={handleGenerate} className="w-full">
               Згенерувати розклад
             </Button>
-            <Button onClick={handleNavigateAdmin} className="w-full mt-2">
+            <Button
+              variant="outline"
+              onClick={handleNavigateAdmin}
+              className="w-full mt-2"
+            >
+              Зберегти змінений розклад
+            </Button>
+            <Button
+              variant="link"
+              onClick={handleNavigateAdmin}
+              className="w-full mt-4"
+            >
               Редагувати конфігурацію розкладу
             </Button>
           </div>

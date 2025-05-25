@@ -3,12 +3,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import type { ClassSchedule, Lesson } from "@/types/schedule.interface"; // або звідки ти експортуєш
+import { Dispatch, SetStateAction } from "react";
 
 interface ScheduleViewProps {
   schedule: ClassSchedule[];
+  setSelectedAction: Dispatch<SetStateAction<ClassSchedule>>;
 }
 
-export const ScheduleView: React.FC<ScheduleViewProps> = ({ schedule }) => {
+export const ScheduleView: React.FC<ScheduleViewProps> = ({
+  schedule,
+  setSelectedAction,
+}) => {
   return (
     <Tabs
       defaultValue={schedule[0]?.class_name}
@@ -16,7 +21,11 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({ schedule }) => {
     >
       <TabsList className="flex flex-wrap gap-2 mb-4">
         {schedule.map((group) => (
-          <TabsTrigger key={group.class_name} value={group.class_name}>
+          <TabsTrigger
+            key={group.class_name}
+            value={group.class_name}
+            onSelect={() => setSelectedAction(group)}
+          >
             {group.class_name}
           </TabsTrigger>
         ))}

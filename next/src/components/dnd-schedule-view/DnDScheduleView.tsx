@@ -3,20 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import type { ClassSchedule, Lesson } from "@/types/schedule.interface"; // або звідки ти експортуєш
-import {
-  closestCenter,
-  DndContext,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ScheduleItem } from "./content/schedule-item/schedule-item";
 
 interface ScheduleViewProps {
   schedule: ClassSchedule[];
@@ -27,38 +14,29 @@ export const DnDScheduleView: React.FC<ScheduleViewProps> = ({
   schedule,
   setScheduleAction,
 }) => {
-  const sensors = useSensors(useSensor(PointerSensor));
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
-  const handleDragEnd = (event: any, groupIndex: number, dayIndex: number) => {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
 
-    setScheduleAction((prev) => {
-      const updated = [...prev];
+  const handleDragOver = (e: React.DragEvent<HTMLLIElement>) => {
+    e.preventDefault();
+  };
 
-      const lessons = [...updated[groupIndex].week[dayIndex].lessons];
+  const handleDrop = (index: number, groupIndex: number, dayIndex: number) => {
+    if (draggedIndex === null || draggedIndex === index) return;
 
-      const oldIndex = lessons.findIndex(
-        (_, i) => `${dayIndex}-${i}` === active.id,
-      );
+    const newItems = [...schedule];
 
-      const newIndex = lessons.findIndex(
-        (_, i) => `${dayIndex}-${i}` === over.id,
-      );
+    const [movedItem] = newItems[groupIndex].week[dayIndex].lessons.splice(
+      draggedIndex,
+      1,
+    );
+    newItems[groupIndex].week[dayIndex].lessons.splice(index, 0, movedItem);
 
-      console.log(
-        oldIndex,
-        newIndex,
-        updated[groupIndex].week[dayIndex].lessons[oldIndex],
-      );
-
-      const temp = updated[groupIndex].week[dayIndex].lessons[oldIndex];
-      updated[groupIndex].week[dayIndex].lessons[oldIndex] =
-        updated[groupIndex].week[dayIndex].lessons[newIndex];
-      updated[groupIndex].week[dayIndex].lessons[newIndex] = temp;
-
-      return updated;
-    });
+    setScheduleAction(newItems);
+    setDraggedIndex(null);
   };
 
   return (
@@ -89,29 +67,33 @@ export const DnDScheduleView: React.FC<ScheduleViewProps> = ({
                 <div className="bg-muted px-4 py-2 font-semibold text-foreground">
                   {dayItem.day}
                 </div>
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={(event) =>
-                    handleDragEnd(event, groupIndex, dayIndex)
-                  }
-                >
-                  <SortableContext
-                    items={dayItem.lessons.map((_, i) => `${dayIndex}-${i}`)}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    <ul>
-                      {dayItem.lessons.map((lesson, i) => (
-                        <ScheduleItem
-                          key={`${dayIndex}-${i}`}
-                          integer={`${dayIndex}-${i}`}
-                          id={`${dayIndex}-${i}`}
-                          lesson={lesson}
-                        />
-                      ))}
-                    </ul>
-                  </SortableContext>
-                </DndContext>
+                <ul>
+                  {dayItem.lessons.map((lesson, i) => (
+                    <li
+                      draggable
+                      onDragStart={() => handleDragStart(i)}
+                      onDragOver={handleDragOver}
+                      onDrop={() => handleDrop(i, groupIndex, dayIndex)}
+                      key={i}
+                      className="flex justify-between items-center border-t px-4 py-3 text-sm"
+                    >
+                      {lesson ? (
+                        <>
+                          <span className="text-foreground">
+                            {lesson?.subject}
+                          </span>
+                          <span className="text-muted-foreground">
+                            {lesson?.teacher}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-muted-foreground italic w-full text-center">
+                          —
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>

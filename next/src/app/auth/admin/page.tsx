@@ -1,21 +1,27 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { LockKeyhole } from 'lucide-react'
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { LockKeyhole } from "lucide-react";
+import { connectToDjangoAdmin } from "@/api/connect_django_admin";
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    // TODO: Реальна авторизація
-    alert(`Logging in as ${email}`)
-  }
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await connectToDjangoAdmin(email, password);
+  };
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-4">
@@ -52,10 +58,12 @@ export default function AdminLoginPage() {
             </div>
           </CardContent>
           <CardFooter className="mt-4">
-            <Button type="submit" className="w-full">Увійти</Button>
+            <Button type="submit" className="w-full">
+              Увійти
+            </Button>
           </CardFooter>
         </form>
       </Card>
     </div>
-  )
+  );
 }

@@ -11,7 +11,7 @@ export interface EmptyLesson {
 
 export interface DaySchedule {
   day: string;
-  lessons: (Lesson | EmptyLesson | null)[];
+  lessons: (Lesson | null)[];
 }
 
 export interface ClassSchedule {

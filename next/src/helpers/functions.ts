@@ -119,19 +119,3 @@ export const nullify = <T>(nullifyArg: T, ...functions: ((v: T) => void)[]) => {
     func?.(JSON.parse(JSON.stringify(nullifyArg)));
   });
 };
-
-export function injectIds(schedule: ClassSchedule[]): ClassSchedule[] {
-  return schedule.map((group) => ({
-    ...group,
-    week: group.week.map((day) => ({
-      ...day,
-      lessons: day.lessons.map((lesson) => {
-        if (lesson && "subject" in lesson) {
-          return { ...lesson, dndId: uuidv4() };
-        } else {
-          return { dndId: uuidv4(), isEmpty: true };
-        }
-      }),
-    })),
-  }));
-}

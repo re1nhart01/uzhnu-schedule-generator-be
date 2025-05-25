@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { Footer } from "@/components/footer/footer";
 import { Header } from "@/components/header/header";
 import "@/locales/i18n";
+import { Toaster } from "sonner";
 
 import "@/services/http/axios.config";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster richColors />
         <Header />
         {children}
         <Footer />
