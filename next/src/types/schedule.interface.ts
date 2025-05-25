@@ -1,11 +1,17 @@
 export interface Lesson {
   subject: string;
   teacher: string;
+  dndId: string;
+}
+
+export interface EmptyLesson {
+  dndId: string;
+  isEmpty: boolean;
 }
 
 export interface DaySchedule {
   day: string;
-  lessons: (Lesson | null)[];
+  lessons: (Lesson | EmptyLesson | null)[];
 }
 
 export interface ClassSchedule {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +13,12 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import { ScheduleView } from "@/components/schedule-view/ScheduleView";
+import { MOCK_SCHEDULE } from "@/mock/MOCK_SCHEDULE";
+import { useScheduleStore } from "@/store/schedules.store";
+import { DnDScheduleView } from "@/components/dnd-schedule-view/DnDScheduleView";
+import { injectIds } from "@/helpers/functions";
 
 const groups = ["КН-31", "КН-32", "КН-33"];
 const days = [
@@ -25,74 +31,49 @@ const days = [
 ];
 
 export default function ScheduleConfigPage() {
-  const [selectedGroup, setSelectedGroup] = useState(groups[0]);
-  const [subjectCount, setSubjectCount] = useState(1);
-  const [selectedDays, setSelectedDays] = useState<string[]>([...days]);
+  const router = useRouter();
+  const { generateSchedule, currentGeneratedSchedule } = useScheduleStore();
+  const [schedule, setSchedule] = useState(currentGeneratedSchedule);
 
-  const toggleDay = (day: string) => {
-    setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
+  const handleNavigateAdmin = () => {
+    window.open(
+      `${process.env.NEXT_PUBLIC_API_URL}admin/`,
+      "_blank",
+      "rel=noopener noreferrer",
     );
   };
 
-  const handleGenerate = () => {
-    alert(
-      `Група: ${selectedGroup}\nПари на тиждень: ${subjectCount}\nДні: ${selectedDays.join(", ")}`,
-    );
+  const handleGenerate = async () => {
+    await generateSchedule();
   };
+
+  useEffect(() => {
+    setSchedule(currentGeneratedSchedule);
+  }, [currentGeneratedSchedule]);
 
   return (
-    <div className="max-w-2xl mx-auto py-10 px-4 space-y-6 min-h-[87vh]">
+    <div className="flex flex-col items-center justify-center py-10 px-4 space-y-6 min-h-[87vh]">
+      {currentGeneratedSchedule.length <= 0 ? (
+        <Card className="w-[20vw] h-[20vh] flex flex-row justify-center items-center">
+          <CardTitle className="">Немає згенерованого розкладку</CardTitle>
+        </Card>
+      ) : (
+        <DnDScheduleView
+          schedule={currentGeneratedSchedule}
+          setScheduleAction={setSchedule}
+        />
+      )}
       <Card>
         <CardHeader>
           <CardTitle>Налаштування розкладу</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label>Оберіть групу</Label>
-            <Select value={selectedGroup} onValueChange={setSelectedGroup}>
-              <SelectTrigger>
-                <SelectValue placeholder="Група" />
-              </SelectTrigger>
-              <SelectContent>
-                {groups.map((group) => (
-                  <SelectItem key={group} value={group}>
-                    {group}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label>Кількість занять одного предмета на тиждень</Label>
-            <Input
-              type="number"
-              min={1}
-              max={10}
-              value={subjectCount}
-              onChange={(e) => setSubjectCount(Number(e.target.value))}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>Дні тижня</Label>
-            <div className="grid grid-cols-2 gap-2">
-              {days.map((day) => (
-                <label key={day} className="flex items-center gap-2">
-                  <Checkbox
-                    checked={selectedDays.includes(day)}
-                    onCheckedChange={() => toggleDay(day)}
-                  />
-                  <span>{day}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
           <div className="pt-4">
             <Button onClick={handleGenerate} className="w-full">
               Згенерувати розклад
+            </Button>
+            <Button onClick={handleNavigateAdmin} className="w-full mt-2">
+              Редагувати конфігурацію розкладу
             </Button>
           </div>
         </CardContent>
