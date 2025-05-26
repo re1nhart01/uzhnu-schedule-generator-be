@@ -19,6 +19,7 @@ import { ClassSchedule } from "@/types/schedule.interface";
 
 export default function HomePage() {
   const [selected, setSelected] = useState(MOCK_SCHEDULE.schedule[0]);
+
   const exportToPDF = (schedule: ClassSchedule) => {
     exportScheduleToPDF(schedule);
   };

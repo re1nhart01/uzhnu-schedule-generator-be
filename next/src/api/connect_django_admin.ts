@@ -5,7 +5,7 @@ export const connectToDjangoAdmin = async (login: string, password: string) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFTOKEN": process.env.NEXT_PUBLIC_CSRF_TOKEN,
+        "X-CSRFTOKEN": process.env.NEXT_PUBLIC_CSRF_TOKEN!,
       },
       body: JSON.stringify({ login, password }),
     },
@@ -14,8 +14,6 @@ export const connectToDjangoAdmin = async (login: string, password: string) => {
   if (!res.ok) {
     throw new Error("Login failed");
   }
-
-  console.log(await res.json());
 
   return res.json();
 };

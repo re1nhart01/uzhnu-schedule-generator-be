@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,11 +18,13 @@ import { ScheduleView } from "@/components/schedule-view/ScheduleView";
 import { MOCK_SCHEDULE } from "@/mock/MOCK_SCHEDULE";
 import { useScheduleStore } from "@/store/schedules.store";
 import { DnDScheduleView } from "@/components/dnd-schedule-view/DnDScheduleView";
+import { UpdateModal } from "@/components/update-modal/update-modal";
 
 export default function ScheduleConfigPage() {
   const router = useRouter();
   const { generateSchedule, currentGeneratedSchedule } = useScheduleStore();
   const [schedule, setSchedule] = useState(currentGeneratedSchedule);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const handleNavigateAdmin = () => {
     window.open(
@@ -35,6 +37,10 @@ export default function ScheduleConfigPage() {
   const handleGenerate = async () => {
     await generateSchedule();
   };
+
+  const handleRemoveItem = useCallback(() => {}, []);
+
+  const handleUpdateItem = useCallback(() => {}, []);
 
   useEffect(() => {
     setSchedule(currentGeneratedSchedule);

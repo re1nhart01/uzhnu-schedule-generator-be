@@ -6,16 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c89b0ad9-23c7-43aa-ac24-743542426ade" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/next/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/next/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next/src/api/connect_django_admin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/api/connect_django_admin.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next/src/app/admin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/admin/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/app/api/login_admin/route.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/app/api/logout_admin/route.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next/src/components/dnd-schedule-view/DnDScheduleView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/components/dnd-schedule-view/DnDScheduleView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/components/dnd-schedule-view/content/schedule-item/schedule-item.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/components/schedule-view/ScheduleView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/components/schedule-view/ScheduleView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/helpers/functions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/helpers/functions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/types/schedule.interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/types/schedule.interface.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/next/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/next/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -102,7 +96,7 @@
       <updated>1747765319118</updated>
       <workItem from="1747765320278" duration="310000" />
       <workItem from="1748024279557" duration="1048000" />
-      <workItem from="1748025724294" duration="5877000" />
+      <workItem from="1748025724294" duration="6581000" />
     </task>
     <servers />
   </component>
