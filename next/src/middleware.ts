@@ -18,5 +18,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/teacher/:path*", "/auth/teacher"], // які шляхи перевіряти
+  matcher: ["/teacher/:path*", "/auth/teacher"],
 };

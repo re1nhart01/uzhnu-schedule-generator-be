@@ -15,14 +15,14 @@ import { Dispatch, FC, SetStateAction } from "react";
 
 type updateModalProps = {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpenAction: Dispatch<SetStateAction<boolean>>;
 };
 
-export const UpdateModal: FC<updateModalProps> = ({ open, setOpen }) => {
+export const UpdateModal: FC<updateModalProps> = ({ open, setOpenAction }) => {
   return (
     <Dialog open={open}>
       <DialogTrigger asChild>
-        <Button onClick={() => setOpen(true)}>Відкрити модалку</Button>
+        <Button onClick={() => setOpenAction(true)}>Відкрити модалку</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -34,7 +34,7 @@ export const UpdateModal: FC<updateModalProps> = ({ open, setOpen }) => {
         <div className="py-4">Тут може бути ваш контент</div>
 
         <DialogFooter>
-          <DialogClose asChild onClick={() => setOpen(false)}>
+          <DialogClose asChild onClick={() => setOpenAction(false)}>
             <Button variant="secondary">Закрити</Button>
           </DialogClose>
           <Button>Зберегти</Button>

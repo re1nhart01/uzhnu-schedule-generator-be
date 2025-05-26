@@ -14,7 +14,7 @@ type AxiosCustomHeaderType = Record<"Authorization", string> &
   >;
 
 export const newAbortSignal = (timeoutMs: number) => {
-  if (typeof window === "undefined") return undefined; // SSR-safe
+  if (typeof window === "undefined") return undefined;
   const abortController = new AbortController();
   setTimeout(() => abortController.abort(), timeoutMs || 0);
   return abortController.signal;
@@ -22,15 +22,14 @@ export const newAbortSignal = (timeoutMs: number) => {
 
 axios.interceptors.request.use(
   (config) => {
-
     const access_token = "";
     if (access_token && isNil(config.headers?.Authorization)) {
       (<AxiosCustomHeaderType>config.headers) = pipe(
         assoc(
           "Content-Type",
-          defaultTo("application/json", config.headers?.getContentType?.())
+          defaultTo("application/json", config.headers?.getContentType?.()),
         ),
-        assoc("Authorization", `Bearer ${access_token}`)
+        assoc("Authorization", `Bearer ${access_token}`),
       )(config.headers);
     }
 
@@ -51,7 +50,6 @@ axios.interceptors.response.use(
     if (error?.response?.status === 401) {
       counterToLogout++;
       if (counterToLogout >= maxCountToLogout) {
-        // Optional logout or redirect
       }
     }
     return Promise.reject(error);

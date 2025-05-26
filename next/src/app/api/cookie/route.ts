@@ -1,4 +1,3 @@
-// app/api/login/route.ts
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
@@ -11,14 +10,14 @@ export async function POST(req: Request) {
     httpOnly: true,
     secure: true,
     path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 днів
+    maxAge: 60 * 60 * 24 * 7,
   });
 
   cookieStore.set("refresh_token", refresh_token, {
     httpOnly: true,
     secure: true,
     path: "/",
-    maxAge: 60 * 60 * 24 * 30, // 30 днів
+    maxAge: 60 * 60 * 24 * 30,
   });
 
   return NextResponse.json({ success: true });

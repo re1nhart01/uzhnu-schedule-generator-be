@@ -22,11 +22,13 @@ import { useGoogleAuthStore } from "@/store/google-auth.store";
 import { useRouter } from "next/navigation";
 import { useUserCredentials } from "@/hooks/useUserCredentials";
 import { logout } from "@/api/remove_cookies";
+import { useTheme } from "next-themes";
 
 type headerProps = object;
 
 export const Header: FC<headerProps> = () => {
   const [lang, setLang] = useState("uk");
+  const { theme, setTheme } = useTheme();
   const { userData, setNullUserData } = useGoogleAuthStore();
   const { removeItems } = useUserCredentials();
   const router = useRouter();

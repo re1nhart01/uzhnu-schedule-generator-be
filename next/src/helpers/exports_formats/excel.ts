@@ -6,7 +6,7 @@ export const exportScheduleToExcel = (group: ClassSchedule) => {
   const sheetData: any[][] = [];
 
   group.week.forEach((day) => {
-    sheetData.push([day.day]); // Назва дня
+    sheetData.push([day.day]);
     sheetData.push(["Предмет", "Викладач"]);
 
     day.lessons.forEach((lesson) => {

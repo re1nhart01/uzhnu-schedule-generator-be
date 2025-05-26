@@ -2,10 +2,10 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import type { ClassSchedule, Lesson } from "@/types/schedule.interface"; // або звідки ти експортуєш
+import type { ClassSchedule, Lesson } from "@/types/schedule.interface";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import "./dnd_schedule_view.styles.css";
-import { GripVertical, RefreshCcw, Trash } from "lucide-react";
+import { GripVertical, Plus, RefreshCcw, Trash, X } from "lucide-react";
 import { UpdateModal } from "../update-modal/update-modal";
 import {
   Select,
@@ -105,11 +105,11 @@ export const DnDScheduleView: React.FC<ScheduleViewProps> = ({
                       )}
                       <div className="dnd-schedule-item__overlay">
                         <GripVertical className="w-4 h-4 text-muted-foreground cursor-move dnd-schedule-item__grab-icon" />
-                        <div className="flex flex-row gap-4 static">
+                        <div className="flex flex-row gap-4 static w-[80%]">
                           <select
                             value={selectedCourse}
                             onChange={(e) => setSelectedCourse(e.target.value)}
-                            className="w-[200px] px-3 py-2 border rounded-md text-sm bg-white text-black"
+                            className="w-[100%] px-3 py-2 border rounded-md text-sm bg-white text-black"
                           >
                             <option disabled>Оберіть курс</option>
                             {courses.map((course) => (
@@ -119,14 +119,27 @@ export const DnDScheduleView: React.FC<ScheduleViewProps> = ({
                             ))}
                           </select>
                         </div>
-                        <Trash
-                          className="dnd-schedule-item__action"
-                          color="#AA4A44"
-                        />
+                        <div className="flex flex-row justify-between items-center gap-4">
+                          <Trash
+                            className="dnd-schedule-item__action"
+                            color="#AA4A44"
+                          />
+                          <X
+                            className="dnd-schedule-item__action"
+                            color="#AA4A44"
+                          />
+                        </div>
                       </div>
                     </li>
                   ))}
                 </ul>
+                <button
+                  onClick={() => {}}
+                  className="w-full flex items-center justify-center gap-2 py-2 border-t text-sm text-primary hover:bg-muted transition"
+                >
+                  <Plus className="w-4 h-4" />
+                  Додати урок
+                </button>
               </div>
             ))}
           </div>

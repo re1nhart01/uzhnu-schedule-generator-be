@@ -1,27 +1,26 @@
-// app/about/page.tsx
-'use client'
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Mail, Github, Linkedin } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Mail, Github, Linkedin } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const team = [
   {
-    name: 'Кокайко Євген Олександрович',
-    github: 'https://github.com/eugenekokayko',
-    linkedin: 'https://www.linkedin.com/in/eugenekokayko',
-    email: 'eugen.kokayko@example.com',
-    photo: '/avatars/eugene.jpg',
+    name: "Кокайко Євген Олександрович",
+    github: "https://github.com/eugenekokayko",
+    linkedin: "https://www.linkedin.com/in/eugenekokayko",
+    email: "eugen.kokayko@example.com",
+    photo: "/avatars/eugene.jpg",
   },
   {
-    name: 'Бачинський Крістіан Вікторович',
-    github: 'https://github.com/kristianbachynskyi',
-    linkedin: 'https://www.linkedin.com/in/kristianbachynskyi',
-    email: 'kristian.bachynskyi@example.com',
-    photo: '/avatars/kristian.jpg',
+    name: "Бачинський Крістіан Вікторович",
+    github: "https://github.com/kristianbachynskyi",
+    linkedin: "https://www.linkedin.com/in/kristianbachynskyi",
+    email: "kristian.bachynskyi@example.com",
+    photo: "/avatars/kristian.jpg",
   },
-]
+];
 
 export default function AboutPage() {
   return (
@@ -45,19 +44,30 @@ export default function AboutPage() {
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <a href={`mailto:${person.email}`} className="underline text-sm">
+                  <a
+                    href={`mailto:${person.email}`}
+                    className="underline text-sm"
+                  >
                     {person.email}
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
                   <Github className="w-4 h-4" />
-                  <Link href={person.github} className="underline text-sm" target="_blank">
+                  <Link
+                    href={person.github}
+                    className="underline text-sm"
+                    target="_blank"
+                  >
                     GitHub
                   </Link>
                 </div>
                 <div className="flex items-center gap-2">
                   <Linkedin className="w-4 h-4" />
-                  <Link href={person.linkedin} className="underline text-sm" target="_blank">
+                  <Link
+                    href={person.linkedin}
+                    className="underline text-sm"
+                    target="_blank"
+                  >
                     LinkedIn
                   </Link>
                 </div>
@@ -67,5 +77,5 @@ export default function AboutPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }

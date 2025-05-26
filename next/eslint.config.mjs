@@ -55,8 +55,8 @@ const eslintConfig = [
         {
           groups: [
             ["^@?\\w"],
-            ["^(@src|@components|@utils|@hooks)(/.*|$)"], // customize alias here
-            ["^\\u0000"], // side effect imports
+            ["^(@src|@components|@utils|@hooks)(/.*|$)"],
+            ["^\\u0000"],
             ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
             ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
             ["^.+\\.s?css$"],

@@ -49,7 +49,7 @@ export default function ScheduleConfigPage() {
   return (
     <div className="flex flex-col items-center justify-center py-10 px-4 space-y-6 min-h-[87vh]">
       {currentGeneratedSchedule.length <= 0 ? (
-        <Card className="w-[20vw] h-[20vh] flex flex-row justify-center items-center">
+        <Card className="w-[37vw] h-[20vh] flex flex-row justify-center items-center">
           <CardTitle className="">Немає згенерованого розкладку</CardTitle>
         </Card>
       ) : (

@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import type { ClassSchedule, Lesson } from "@/types/schedule.interface"; // або звідки ти експортуєш
+import type { ClassSchedule, Lesson } from "@/types/schedule.interface";
 import { Dispatch, SetStateAction } from "react";
 
 interface ScheduleViewProps {

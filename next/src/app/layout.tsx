@@ -7,6 +7,7 @@ import "@/locales/i18n";
 import { Toaster } from "sonner";
 
 import "@/services/http/axios.config";
+import { ThemeProvider } from "@/services/theme/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,13 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster richColors />
-        <Header />
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Toaster richColors />
+          <Header />
+          {children}
+        </ThemeProvider>
         <Footer />
       </body>
     </html>

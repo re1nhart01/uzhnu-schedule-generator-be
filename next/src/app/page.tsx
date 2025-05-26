@@ -2,13 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { CalendarDays, Download } from "lucide-react";
 import { ScheduleView } from "@/components/schedule-view/ScheduleView";
 import { MOCK_SCHEDULE } from "@/mock/MOCK_SCHEDULE";
@@ -18,7 +11,9 @@ import { exportScheduleToPDF } from "@/helpers/exports_formats/pdf";
 import { ClassSchedule } from "@/types/schedule.interface";
 
 export default function HomePage() {
-  const [selected, setSelected] = useState(MOCK_SCHEDULE.schedule[0]);
+  const [selected, setSelected] = useState<ClassSchedule>(
+    MOCK_SCHEDULE.schedule[0] as ClassSchedule,
+  );
 
   const exportToPDF = (schedule: ClassSchedule) => {
     exportScheduleToPDF(schedule);
@@ -46,7 +41,7 @@ export default function HomePage() {
       </div>
 
       <ScheduleView
-        schedule={MOCK_SCHEDULE.schedule}
+        schedule={MOCK_SCHEDULE.schedule as ClassSchedule[]}
         setSelectedAction={setSelected}
       />
 
