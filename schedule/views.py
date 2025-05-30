@@ -7,7 +7,7 @@ from rest_framework.views import APIView, Response
 from django.db.models import Prefetch
 from rest_framework.permissions import IsAdminUser
 
-from schedule.models import Class, ClassSubject, Faculty, TeacherSubject
+from schedule.models import Class, ClassSubject, Faculty, TeacherSubject, Schedule
 
 # Pydantic models
 class ScheduleLesson(BaseModel):
@@ -234,3 +234,69 @@ class GenerateScheduleView(APIView):
         )
         print(schedule_json)
         return Response({"message": "Schedule generated successfully"}, status=200)
+
+class SaveScheduleView(APIView):
+    # permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        schedule_data = request.data.get("schedule")
+        # if not request.user.is_authenticated:
+        #     return Response({"error": "Permission denied"}, status=403)
+        if not schedule_data:
+            return Response({"error": "No schedule data provided"}, status=400)
+        Schedule.objects.create(
+            json_data=schedule_data,
+            # generated_by=request.user
+        )
+        return Response({"message": "Schedule saved successfully"}, status=201)
+
+class SchedulesByDatesView(APIView):
+
+    def get(self, request):
+        # fetch dates
+        dates = request.query_params.getlist('dates', None)
+        if not dates:
+            return Response({"error": "No dates provided"}, status=400)
+        schedules = Schedule.objects.filter(
+            created_at__date__in=dates
+        ).order_by('-created_at')
+        return Response(
+            [
+                {
+                    "id": schedule.id,
+                    "created_at": schedule.created_at.strftime("%Y-%m-%d"),
+                    "updated_at": schedule.updated_at.strftime("%Y-%m-%d"),
+                    "json_data": schedule.json_data
+                }
+                for schedule in schedules
+            ],
+        )
+        
+class ScheduleHistoryView(APIView):
+    
+    def get(self, request):
+        # i need to get history dates
+        schedules = Schedule.objects.all().order_by('-created_at')
+        schedule_dates = [
+            {
+                "id": schedule.id,
+                "created_at": schedule.created_at.strftime("%Y-%m-%d"),
+                "updated_at": schedule.updated_at.strftime("%Y-%m-%d")
+            }
+            for schedule in schedules
+        ]
+        return Response(schedule_dates, status=200)
+
+class TeacherSubjectView(APIView):
+    # permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        teacher_subjects = TeacherSubject.objects.select_related('teacher', 'subject').all()
+        data = [
+            {
+                "teacher": f"{ts.teacher.first_name} {ts.teacher.last_name}",
+                "subject": ts.subject.name
+            }
+            for ts in teacher_subjects
+        ]
+        return Response(data, status=200)

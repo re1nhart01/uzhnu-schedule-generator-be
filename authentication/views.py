@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema
 import dotenv
+from django.contrib.auth import login
 import os
 
 dotenv.load_dotenv()
@@ -81,3 +82,14 @@ class WhoamiView(APIView):
             "image_url": user.image_url,
         }
         return Response(user_data, status=200)
+
+class AuthenthicateAdmin(APIView):
+    def post(self, request):
+        email, password = request.data.get("email"), request.data.get("password")
+        user = get_user_model().objects.filter(email=email).first()
+        if not user or not user.check_password(password):
+            return Response({"error": "Invalid credentials"}, status=401)
+        if user.role != "admin":
+            return Response({"error": "User is not an admin"}, status=403)
+        login(request, user)
+        return HttpResponseRedirect("/admin/")  # Redirect to the admin page after successful login

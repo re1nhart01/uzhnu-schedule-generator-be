@@ -73,6 +73,6 @@ class TeacherUnavailableTime(models.Model):
 
 class Schedule(models.Model):
     json_data = models.JSONField()
-    generated_by = models.ForeignKey(user_model, on_delete=models.CASCADE)
+    generated_by = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
