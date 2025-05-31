@@ -7,7 +7,7 @@ from rest_framework.views import APIView, Response
 from django.db.models import Prefetch
 from rest_framework.permissions import IsAdminUser
 
-from schedule.models import Class, ClassSubject, Faculty, TeacherSubject, Schedule
+from schedule.models import Class, ClassSubject, Faculty, TeacherSubject, Schedule, TeacherUnavailableSlot
 
 # Pydantic models
 class ScheduleLesson(BaseModel):
@@ -106,6 +106,12 @@ class GenerateScheduleManuallyView(APIView):
         # Ініціалізація
         schedule = {class_name: [None] * total_slots for class_name in classes}
         teacher_busy = defaultdict(lambda: [False] * total_slots)
+        # Збір даних про вільні слоти вчителів
+        teacher_unavailable = defaultdict(set)
+        unavailables = TeacherUnavailableSlot.objects.all().select_related("teacher")
+        for slot in unavailables:
+            index = slot.day * lessons_per_day + slot.lesson_number
+            teacher_unavailable[f"{slot.teacher.first_name} {slot.teacher.last_name}"].add(index)
 
         # Алгоритм генерації
         def generate_schedule():
@@ -116,7 +122,7 @@ class GenerateScheduleManuallyView(APIView):
                     attempts = list(range(total_slots))
                     random.shuffle(attempts)
                     for i in attempts:
-                        if schedule[class_name][i] is None and not teacher_busy[subj['teacher']][i]:
+                        if schedule[class_name][i] is None and not teacher_busy[subj['teacher']][i] and i not in teacher_unavailable[subj['teacher']]:
                             schedule[class_name][i] = subj
                             teacher_busy[subj['teacher']][i] = True
                             placed = True
@@ -300,3 +306,44 @@ class TeacherSubjectView(APIView):
             for ts in teacher_subjects
         ]
         return Response(data, status=200)
+
+# class TeacherUnavailableSlot(models.Model):
+#     teacher = models.ForeignKey(user_model, on_delete=models.CASCADE)
+#     day = models.IntegerField()  # 0 to 6 for Sunday to Saturday
+#     lesson_number = models.IntegerField()  # 0 to 3
+
+#     def __str__(self):
+#         return f"{self.teacher.first_name} {self.teacher.last_name} - Day: {self.day}, Lesson: {self.lesson_number}"
+
+class CreateBatchUnavailableSlotsView(APIView):
+    # permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        data = request.data.get("unavailable_slots", [])
+        if not data:
+            return Response({"error": "No unavailable slots provided"}, status=400)
+
+        created_slots = []
+        for slot in data:
+            try:
+                teacher = slot.get("teacher")
+                day = slot.get("day")
+                lesson_number = slot.get("lesson_number")
+                if not teacher or day is None or lesson_number is None:
+                    continue
+                teacher_instance = TeacherSubject.objects.get(teacher__username=teacher).teacher
+                new_slot = TeacherUnavailableSlot.objects.create(
+                    teacher=teacher_instance,
+                    day=day,
+                    lesson_number=lesson_number
+                )
+                created_slots.append({
+                    "id": new_slot.id,
+                    "teacher": str(new_slot.teacher),
+                    "day": new_slot.day,
+                    "lesson_number": new_slot.lesson_number
+                })
+            except Exception as e:
+                return Response({"error": str(e)}, status=500)
+
+        return Response({"created_slots": created_slots}, status=201)

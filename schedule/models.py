@@ -76,3 +76,11 @@ class Schedule(models.Model):
     generated_by = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class TeacherUnavailableSlot(models.Model):
+    teacher = models.ForeignKey(user_model, on_delete=models.CASCADE)
+    day = models.IntegerField()  # 0 to 6 for Sunday to Saturday
+    lesson_number = models.IntegerField()  # 0 to 3
+
+    def __str__(self):
+        return f"{self.teacher.first_name} {self.teacher.last_name} - Day: {self.day}, Lesson: {self.lesson_number}"
