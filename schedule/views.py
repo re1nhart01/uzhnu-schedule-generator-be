@@ -81,8 +81,8 @@ class GenerateScheduleManuallyView(APIView):
             data.append(faculty_dict)
 
         # Параметри розкладу
-        days_per_week = 5
-        lessons_per_day = 4
+        days_per_week = request.data.get("days_per_week", 5)  # 5 днів на тиждень
+        lessons_per_day = request.data.get("lessons_per_day", 4)  # 4 уроки на день
         total_slots = days_per_week * lessons_per_day  # 20 слотів на тиждень
 
         # Підготовка даних по класах
