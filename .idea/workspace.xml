@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c89b0ad9-23c7-43aa-ac24-743542426ade" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/next/src/app/admin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/app/admin/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/components/dnd-schedule-view/DnDScheduleView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/components/dnd-schedule-view/DnDScheduleView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next/src/components/dnd-schedule-view/dnd_schedule_view.styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/next/src/components/dnd-schedule-view/dnd_schedule_view.styles.css" afterDir="false" />
-    </list>
+    <list default="true" id="c89b0ad9-23c7-43aa-ac24-743542426ade" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -93,7 +89,7 @@
       <updated>1747765319118</updated>
       <workItem from="1747765320278" duration="310000" />
       <workItem from="1748024279557" duration="1048000" />
-      <workItem from="1748025724294" duration="7181000" />
+      <workItem from="1748025724294" duration="7786000" />
     </task>
     <servers />
   </component>

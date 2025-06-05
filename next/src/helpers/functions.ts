@@ -1,4 +1,3 @@
-import { ClassSchedule, Lesson } from "@/types/schedule.interface";
 import {
   compose,
   defaultTo,
@@ -9,7 +8,6 @@ import {
   tail,
   toUpper,
 } from "ramda";
-import { v4 as uuidv4 } from "uuid";
 
 export const capitalizeFirstLetter = compose(
   join(""),
@@ -119,3 +117,19 @@ export const nullify = <T>(nullifyArg: T, ...functions: ((v: T) => void)[]) => {
     func?.(JSON.parse(JSON.stringify(nullifyArg)));
   });
 };
+
+
+
+export function getDates(dates: string[]) {
+  let result = "";
+  dates.forEach((date, index) => {
+    const dateFormat =  new Date(date).toISOString().slice(0, 10);
+    if (index === 0) {
+      result += `?dates=${dateFormat}`
+    } else {
+      result += `&dates=${dateFormat}`
+    }
+  })
+
+  return result;
+}

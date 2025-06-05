@@ -2,27 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { ScheduleView } from "@/components/schedule-view/ScheduleView";
-import { MOCK_SCHEDULE } from "@/mock/MOCK_SCHEDULE";
-import { useScheduleStore } from "@/store/schedules.store";
+import { useAdminScheduleStore } from "@/store/schedules.store";
 import { DnDScheduleView } from "@/components/dnd-schedule-view/DnDScheduleView";
-import { UpdateModal } from "@/components/update-modal/update-modal";
 
 export default function ScheduleConfigPage() {
   const router = useRouter();
-  const { generateSchedule, currentGeneratedSchedule } = useScheduleStore();
+  const { generateSchedule, currentGeneratedSchedule } = useAdminScheduleStore();
   const [schedule, setSchedule] = useState(currentGeneratedSchedule);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
