@@ -6,8 +6,13 @@ from pydantic import BaseModel
 from rest_framework.views import APIView, Response
 from django.db.models import Prefetch
 from rest_framework.permissions import IsAdminUser
-
+from drf_spectacular.utils import extend_schema
 from schedule.models import Class, ClassSubject, Faculty, TeacherSubject, Schedule, TeacherUnavailableSlot
+from schedule.serializers import ScheduleSerializer
+from django.contrib.auth import get_user_model
+from django.db import transaction
+
+user_model = get_user_model()
 
 # Pydantic models
 class ScheduleLesson(BaseModel):
@@ -28,6 +33,17 @@ class ScheduleResponse(BaseModel):
     schedule: list[ScheduleClass]
 
 # API view
+@extend_schema(
+    request={
+        'application/json': {
+            'type': 'object',
+            'properties': {
+                'days_per_week': {'type': 'integer', 'example': 5},
+                'lessons_per_day': {'type': 'integer', 'example': 4}
+            }
+        }
+    },
+)
 class GenerateScheduleManuallyView(APIView):
     # permission_classes = [IsAdminUser]
 
@@ -103,7 +119,6 @@ class GenerateScheduleManuallyView(APIView):
                         })
 
 
-        # Ініціалізація
         schedule = {class_name: [None] * total_slots for class_name in classes}
         teacher_busy = defaultdict(lambda: [False] * total_slots)
         # Збір даних про вільні слоти вчителів
@@ -113,7 +128,6 @@ class GenerateScheduleManuallyView(APIView):
             index = slot.day * lessons_per_day + slot.lesson_number
             teacher_unavailable[f"{slot.teacher.first_name} {slot.teacher.last_name}"].add(index)
 
-        # Алгоритм генерації
         def generate_schedule():
             for class_name, subjects in classes.items():
                 random.shuffle(subjects)
@@ -131,7 +145,6 @@ class GenerateScheduleManuallyView(APIView):
                         return False
             return True
 
-        # Генерація з обмеженням на 1000 спроб
         for _ in range(1000):
             schedule = {class_name: [None] * total_slots for class_name in classes}
             teacher_busy = defaultdict(lambda: [False] * total_slots)
@@ -140,7 +153,6 @@ class GenerateScheduleManuallyView(APIView):
         else:
             return Response({"error": "Не вдалося згенерувати розклад за 1000 спроб."}, status=500)
 
-        # Побудова структури Pydantic
         days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
         schedule_classes = []
 
@@ -241,6 +253,19 @@ class GenerateScheduleView(APIView):
         print(schedule_json)
         return Response({"message": "Schedule generated successfully"}, status=200)
 
+@extend_schema(
+    request={
+        'application/json': {
+            'type': 'object',
+            'properties': {
+                'schedule': {'type': 'array', 'description': 'JSON-розклад, який зберігається'}
+            },
+            'required': ['schedule']
+        }
+    },
+    responses={'201': {'type': 'object', 'properties': {'message': {'type': 'string'}}}},
+    description="Зберігає згенерований розклад у базу даних"
+)
 class SaveScheduleView(APIView):
     # permission_classes = [IsAdminUser]
 
@@ -256,7 +281,9 @@ class SaveScheduleView(APIView):
         )
         return Response({"message": "Schedule saved successfully"}, status=201)
 
+
 class SchedulesByDatesView(APIView):
+    serializer_class = ScheduleSerializer
 
     def get(self, request):
         # fetch dates
@@ -278,6 +305,22 @@ class SchedulesByDatesView(APIView):
             ],
         )
         
+@extend_schema(
+    responses={
+        '200': {
+            'type': 'array',
+            'items': {
+                'type': 'object',
+                'properties': {
+                    'id': {'type': 'integer'},
+                    'created_at': {'type': 'string'},
+                    'updated_at': {'type': 'string'}
+                }
+            }
+        }
+    },
+    description="Повертає історію всіх збережених розкладів з датами"
+)
 class ScheduleHistoryView(APIView):
     
     def get(self, request):
@@ -293,6 +336,21 @@ class ScheduleHistoryView(APIView):
         ]
         return Response(schedule_dates, status=200)
 
+@extend_schema(
+    responses={
+        '200': {
+            'type': 'array',
+            'items': {
+                'type': 'object',
+                'properties': {
+                    'teacher': {'type': 'string'},
+                    'subject': {'type': 'string'}
+                }
+            }
+        }
+    },
+    description="Повертає список усіх предметів, які викладає кожен вчитель"
+)
 class TeacherSubjectView(APIView):
     # permission_classes = [IsAdminUser]
 
@@ -315,9 +373,81 @@ class TeacherSubjectView(APIView):
 #     def __str__(self):
 #         return f"{self.teacher.first_name} {self.teacher.last_name} - Day: {self.day}, Lesson: {self.lesson_number}"
 
+@extend_schema(
+    request={
+        'application/json': {
+            'type': 'object',
+            'properties': {
+                'unavailable_slots': {
+                    'type': 'array',
+                    'items': {
+                        'type': 'object',
+                        'properties': {
+                            'teacher_email': {'type': 'string', 'example': 'example@gmail.com'},
+                            'day': {'type': 'integer', 'example': 2},
+                            'lesson_number': {'type': 'integer', 'example': 1}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    responses={
+        '201': {
+            'type': 'object',
+            'properties': {
+                'message': {'type': 'string'}
+            }
+        },
+        '400': {
+            'type': 'object',
+            'properties': {
+                'error': {'type': 'string'}
+            }
+        }
+    },
+    description="Створює список слотів, коли викладачі недоступні"
+)
 class CreateBatchUnavailableSlotsView(APIView):
     # permission_classes = [IsAdminUser]
 
+    def get(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return Response({"error": "Permission denied"}, status=403)
+        slots = TeacherUnavailableSlot.objects.select_related('teacher').filter(teacher=user).all()
+        data = [
+            {
+                "id": slot.id,
+                "teacher": f"{slot.teacher.first_name} {slot.teacher.last_name}",
+                "day": slot.day,
+                "lesson_number": slot.lesson_number
+            }
+            for slot in slots
+        ]
+        return Response(data, status=200)
+
+    @transaction.atomic
+    def delete(self, request):
+        user = request.user
+        slot_ids = request.query_params.getlist("slot_ids", [])
+
+        if not user.is_authenticated:
+            return Response({"error": "Permission denied"}, status=403)
+
+        if not slot_ids:
+            return Response({"error": "No slot IDs provided"}, status=400)
+
+        try:
+            slots = TeacherUnavailableSlot.objects.filter(id__in=slot_ids, teacher=user)
+            if not slots.exists():
+                return Response({"error": "No matching slots found"}, status=404)
+
+            slots.delete()
+            return Response({"message": "Slots deleted successfully"}, status=204)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+        
     def post(self, request):
         data = request.data.get("unavailable_slots", [])
         if not data:
@@ -326,12 +456,12 @@ class CreateBatchUnavailableSlotsView(APIView):
         created_slots = []
         for slot in data:
             try:
-                teacher = slot.get("teacher")
+                teacher_email = slot.get("teacher_email")
                 day = slot.get("day")
                 lesson_number = slot.get("lesson_number")
-                if not teacher or day is None or lesson_number is None:
+                if not teacher_email or day is None or lesson_number is None:
                     continue
-                teacher_instance = TeacherSubject.objects.get(teacher__username=teacher).teacher
+                teacher_instance = user_model.objects.get(email=teacher_email)
                 new_slot = TeacherUnavailableSlot.objects.create(
                     teacher=teacher_instance,
                     day=day,

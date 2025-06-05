@@ -5,3 +5,4 @@ venv
 .DS_Store
 cloud-sql-proxy
 next
+.idea

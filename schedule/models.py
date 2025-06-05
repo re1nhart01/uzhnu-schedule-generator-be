@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import UniqueConstraint
 # Create your models here.
 
 user_model = get_user_model()
@@ -81,6 +82,14 @@ class TeacherUnavailableSlot(models.Model):
     teacher = models.ForeignKey(user_model, on_delete=models.CASCADE)
     day = models.IntegerField()  # 0 to 6 for Sunday to Saturday
     lesson_number = models.IntegerField()  # 0 to 3
+
+    class Meta:
+         constraints = [
+             UniqueConstraint(
+                 fields=['teacher', 'day', 'lesson_number'],
+                 name='unique_teacher_day_lesson'
+             )
+         ] 
 
     def __str__(self):
         return f"{self.teacher.first_name} {self.teacher.last_name} - Day: {self.day}, Lesson: {self.lesson_number}"
