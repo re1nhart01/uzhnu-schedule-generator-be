@@ -304,6 +304,19 @@ class SchedulesByDatesView(APIView):
                 for schedule in schedules
             ],
         )
+
+    def delete(self, request):
+        # delete schedules by dates
+        dates = request.query_params.getlist('dates', None)
+        if not dates:
+            return Response({"error": "No dates provided"}, status=400)
+        schedules = Schedule.objects.filter(
+            created_at__date__in=dates
+        )
+        if not schedules.exists():
+            return Response({"error": "No schedules found for the provided dates"}, status=404)
+        schedules.delete()
+        return Response({"message": "Schedules deleted successfully"}, status=204)
         
 @extend_schema(
     responses={
