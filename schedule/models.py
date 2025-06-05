@@ -92,4 +92,5 @@ class TeacherUnavailableSlot(models.Model):
          ] 
 
     def __str__(self):
-        return f"{self.teacher.first_name} {self.teacher.last_name} - Day: {self.day}, Lesson: {self.lesson_number}"
+        days = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+        return f"{self.teacher.first_name} {self.teacher.last_name} - Day: {days[self.day]}, Lesson: {self.lesson_number + 1}"
