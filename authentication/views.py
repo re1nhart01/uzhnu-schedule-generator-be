@@ -8,6 +8,7 @@ from drf_spectacular.utils import extend_schema
 import dotenv
 from django.contrib.auth import login
 import os
+from django.middleware.csrf import get_token
 
 dotenv.load_dotenv()
 
@@ -92,4 +93,8 @@ class AuthenthicateAdmin(APIView):
         if user.role != "admin":
             return Response({"error": "User is not an admin"}, status=403)
         login(request, user)
-        return Response({"success": True, "message": "Logged in successfully"})
+        csrf_token = get_token(request)
+        return Response({
+            "success": True,
+            "csrfToken": csrf_token
+        })
