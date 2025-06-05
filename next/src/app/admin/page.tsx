@@ -4,30 +4,64 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
-import { useAdminScheduleStore } from "@/store/schedules.store";
 import { DnDScheduleView } from "@/components/dnd-schedule-view/DnDScheduleView";
+import { useAdminConfigStore } from "@/store/admin-config.store";
+import { useSnackbarStore } from "@/store/snackbar.store";
+import { isEmpty } from "ramda";
 
 export default function ScheduleConfigPage() {
   const router = useRouter();
-  const { generateSchedule, currentGeneratedSchedule } = useAdminScheduleStore();
+  const { generateSchedule, currentGeneratedSchedule, allSubjects, getAllSubjects, saveSchedule, allDates, getHistory } = useAdminConfigStore();
   const [schedule, setSchedule] = useState(currentGeneratedSchedule);
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleNavigateAdmin = () => {
-    window.open(
-      `${process.env.NEXT_PUBLIC_API_URL}admin/`,
-      "_blank",
-      "rel=noopener noreferrer",
-    );
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}admin/`;
+  };
+
+  const handleNavigateWatchAndDelete = () => {
+    router.push("/admin/watch-and-delete")
   };
 
   const handleGenerate = async () => {
     await generateSchedule();
   };
 
-  const handleRemoveItem = useCallback(() => {}, []);
+  const handleSaveSchedule = async () => {
+    setLoading(true);
+    try {
+      await saveSchedule(schedule);
 
-  const handleUpdateItem = useCallback(() => {}, []);
+      useSnackbarStore.getState().showSnackbar({
+          title: "Збережено",
+          description: "Ваші розклади збережено успішно.",
+          type: "success",
+          action: () => {
+            console.log("Кнопка натиснута")
+          },
+          actionLabel: "Зберегти",
+        })
+    } catch (e) {
+      useSnackbarStore.getState().showSnackbar({
+          title: "Помилка",
+          description: "Виникла помилка при видаленні",
+          type: "error",
+          action: () => {
+            console.log("Кнопка натиснута")
+          },
+          actionLabel: "Зберегти",
+        })
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    Promise.all([
+      getHistory(),
+      getAllSubjects(),
+    ]).then()
+  }, [])
 
   useEffect(() => {
     setSchedule(currentGeneratedSchedule);
@@ -41,6 +75,7 @@ export default function ScheduleConfigPage() {
         </Card>
       ) : (
         <DnDScheduleView
+          allSubjects={allSubjects ?? []}
           schedule={currentGeneratedSchedule}
           setScheduleAction={setSchedule}
         />
@@ -55,22 +90,30 @@ export default function ScheduleConfigPage() {
               Згенерувати розклад
             </Button>
             <Button
+              disabled={loading || isEmpty(schedule)}
               variant="outline"
-              onClick={handleNavigateAdmin}
+              onClick={handleSaveSchedule}
               className="w-full mt-2"
             >
-              Зберегти змінений розклад
+              {loading ? "Збереження..." : "Зберегти змінений розклад"}
             </Button>
             <Button
               variant="link"
-              onClick={handleNavigateAdmin}
+              onClick={handleNavigateWatchAndDelete}
               className="w-full mt-4"
             >
-              Редагувати конфігурацію розкладу
+              Переглянути і видалити обрані розклади
             </Button>
           </div>
         </CardContent>
       </Card>
+      <Button
+        variant="link"
+        onClick={handleNavigateAdmin}
+        className="w-full mt-4"
+      >
+        Редагувати конфігурацію розкладу
+      </Button>
     </div>
   );
 }

@@ -9,7 +9,7 @@ import type {
 
 interface ScheduleViewProps {
   schedule: ExoticScheduleType[];
-  setSelectedAction: Dispatch<SetStateAction<ClassSchedule>>;
+  setSelectedAction: Dispatch<SetStateAction<ClassSchedule | null>>;
 }
 
 export const ScheduleView: React.FC<ScheduleViewProps> = ({
@@ -42,7 +42,7 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({
                 <TabsTrigger
                   key={classSchedule.class_name}
                   value={classSchedule.class_name}
-                  onSelect={() => setSelectedAction(classSchedule)}
+                  onClick={() => setSelectedAction(classSchedule)}
                 >
                   {classSchedule.class_name}
                 </TabsTrigger>

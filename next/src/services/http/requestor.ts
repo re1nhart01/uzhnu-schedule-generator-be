@@ -62,6 +62,7 @@ export const requester = async <P, T = unknown>(
       method,
       data,
       baseURL,
+      withCredentials: true,
       headers: {
         ...(isNil(headers) ? {} : headers),
       },
@@ -94,6 +95,7 @@ export const requester = async <P, T = unknown>(
               method,
               data,
               baseURL,
+              withCredentials: true,
               headers: {
                 ...(isNil(headers) ? {} : headers),
               },

@@ -23,25 +23,29 @@ export const DateSelectForm:FC<dateSelectFormProps> = ({ availableDates, selecte
 
   return (
     <>
-    <form action={getSubjectsByDatesAction} className="space-y-4">
-      <fieldset className="space-y-2">
-        {availableDates.map((date) => (
-          <label key={date} className="flex items-center gap-2">
-            <Checkbox
-              name="dates"
-              value={date}
-              checked={selected.includes(date)}
-              onCheckedChange={() => toggleDate(date)}
-            />
-            <span>{date}</span>
-          </label>
-        ))}
-      </fieldset>
-      <Button type="submit">Завантажити розклад</Button>
-    </form>
-    {
-      pending ? <SpinnerCentered /> : null
-    }
-    </>
+         <form action={getSubjectsByDatesAction} className="space-y-4">
+           <fieldset
+             className="space-y-2 overflow-y-auto border rounded-md p-2 max-h-[200px]"
+           >
+             {availableDates.map((date) => (
+               <label key={date} className="flex items-center gap-2">
+                 <Checkbox
+                   name="dates"
+                   value={date}
+                   checked={selected.includes(date)}
+                   onCheckedChange={() => toggleDate(date)}
+                 />
+                 <span>{date}</span>
+               </label>
+             ))}
+           </fieldset>
+
+           <Button type="submit" className="w-full">
+             Завантажити розклад
+           </Button>
+         </form>
+
+         {pending && <SpinnerCentered />}
+       </>
   );
 }
