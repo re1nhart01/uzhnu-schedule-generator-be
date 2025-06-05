@@ -16,7 +16,7 @@ export default function ScheduleConfigPage() {
   const [loading, setLoading] = useState(false);
 
   const handleNavigateAdmin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}admin/`;
+    window?.open(`${process.env.NEXT_PUBLIC_API_URL}admin/`, '_blank');
   };
 
   const handleNavigateWatchAndDelete = () => {

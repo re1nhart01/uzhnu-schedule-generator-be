@@ -5,67 +5,81 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGoogleAuthStore } from "@/store/google-auth.store";
+import { useTeacherUnavailableStore } from "@/store/teacher-unavailable.store";
 
-const days = [
-  "Понеділок",
-  "Вівторок",
-  "Середа",
-  "Четвер",
-  "Пʼятниця",
-  "Субота",
-];
-const hours = [
-  "8:00 - 9:30",
-  "9:45 - 11:15",
-  "11:30 - 13:00",
-  "13:15 - 14:45",
-  "15:00 - 16:30",
-];
+const days = ["Понеділок", "Вівторок", "Середа", "Четвер", "Пʼятниця", "Субота"];
+const lessonNumbers = [0, 1, 2, 3, 4]; // Можна змінити кількість пар
 
 export default function TeacherUnavailabilityPage() {
-  const [unavailable, setUnavailable] = useState<Record<string, string[]>>({});
-  const { getWhoami } = useGoogleAuthStore();
+  const { getSlots, saveUnavailableState, isLoading, slots } = useTeacherUnavailableStore();
 
-  const toggleUnavailable = (day: string, hour: string) => {
-    setUnavailable((prev) => {
-      const current = prev[day] || [];
-      return {
-        ...prev,
-        [day]: current.includes(hour)
-          ? current.filter((h) => h !== hour)
-          : [...current, hour],
-      };
-    });
-  };
+  const transformIntoRecord = slots.reduce<Record<number, number[]>>((accumulator, currentValue) => {
+    if (!accumulator[currentValue.day]) {
+      accumulator[currentValue.day] = [];
+    }
+    accumulator[currentValue.day].push(currentValue.lesson_number);
+    return accumulator;
+  }, {});
+
+  const [unavailable, setUnavailable] = useState<Record<number, number[]>>(transformIntoRecord);
+  const { getWhoami, userData } = useGoogleAuthStore();
+  const { access_token, refresh_token } = (function () {
+    try {
+      return JSON.parse(sessionStorage.getItem("USER_DATA") ?? "{ access_token: '', refresh_token: '' }")
+    } catch (e) {
+      return { access_token: "", refresh_token: "" }
+    }
+  })()
+
+
 
   useEffect(() => {
     getWhoami().then();
+    getSlots(access_token).then();
   }, []);
 
-  const handleSave = () => {
-    console.log("Unavailable slots:", unavailable);
-    alert("Непридатні години збережено (поки в консолі)");
+  useEffect(() => {
+    setUnavailable(transformIntoRecord);
+  }, [slots])
+
+  const toggleUnavailable = (dayIndex: number, lessonNumber: number) => {
+    setUnavailable((prev) => {
+      const current = prev[dayIndex] || [];
+      const updated = current.includes(lessonNumber)
+        ? current.filter((n) => n !== lessonNumber)
+        : [...current, lessonNumber];
+      return { ...prev, [dayIndex]: updated };
+    });
+  };
+
+  const handleSave = async () => {
+    if (userData) {
+    await saveUnavailableState(unavailable, access_token, userData);
+    alert("Непридатні години збережено.");
+    }
   };
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4 space-y-6">
+    <div className="max-w-5xl mx-auto py-10 px-4 space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Мій недоступний час</CardTitle>
         </CardHeader>
         <CardContent className="overflow-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {days.map((day) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {days.map((day, index) => (
               <div key={day} className="border rounded-lg p-4 bg-muted">
-                <h4 className="font-semibold mb-2">{day}</h4>
+                <h4 className="font-semibold mb-3">{day}</h4>
                 <div className="space-y-2">
-                  {hours.map((hour) => (
-                    <label key={hour} className="flex items-center gap-2">
+                  {lessonNumbers.map((lesson) => (
+                    <label key={lesson} className="flex items-center gap-2">
                       <Checkbox
-                        checked={unavailable[day]?.includes(hour) || false}
-                        onCheckedChange={() => toggleUnavailable(day, hour)}
+                        checked={unavailable[index]?.includes(lesson) || false}
+                        onCheckedChange={() =>
+                          toggleUnavailable(index, lesson)
+                        }
                       />
-                      <span>{hour}</span>
+                      <span>Пара №{lesson + 1}</span>
                     </label>
                   ))}
                 </div>
@@ -74,8 +88,8 @@ export default function TeacherUnavailabilityPage() {
           </div>
 
           <div className="pt-6">
-            <Button onClick={handleSave} className="w-full">
-              Зберегти
+            <Button onClick={handleSave} className="w-full" disabled={isLoading}>
+              {isLoading ? "Збереження..." : "Зберегти"}
             </Button>
           </div>
         </CardContent>

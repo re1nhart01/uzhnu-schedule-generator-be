@@ -24,11 +24,11 @@ import { useUserCredentials } from "@/hooks/useUserCredentials";
 import { logout } from "@/api/remove_cookies";
 import { useTheme } from "next-themes";
 import { LogOut, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 
 type headerProps = object;
 
 export const Header: FC<headerProps> = () => {
-  const [lang, setLang] = useState("uk");
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const { userData, setNullUserData } = useGoogleAuthStore();
@@ -68,7 +68,13 @@ export const Header: FC<headerProps> = () => {
     >
       <div className="flex flex-row items-center gap-8">
         <Link href="/" className="text-xl font-bold text-foreground">
-          Розклад
+          <Image
+            src="/logo.png"
+            alt="Логотип генератора розкладів"
+            width={64}
+            height={64}
+            className=""
+          />
         </Link>
         <Link
           href="/auth/teacher"
@@ -91,16 +97,6 @@ export const Header: FC<headerProps> = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <Select value={lang} onValueChange={setLang}>
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="Мова" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="uk">Українська</SelectItem>
-            <SelectItem value="en">English</SelectItem>
-          </SelectContent>
-        </Select>
-
         <ThemeToggle />
 
         {userData && (
@@ -134,8 +130,7 @@ export const Header: FC<headerProps> = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Avatar className="cursor-pointer w-10 h-10 border-2 border-yellow-500 bg-yellow-100">
-                <ShieldCheck className="w-5 h-5 text-yellow-600" />
-                <AvatarFallback>ADM</AvatarFallback>
+                <AvatarFallback>A</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">

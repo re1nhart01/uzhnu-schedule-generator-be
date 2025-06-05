@@ -3,7 +3,7 @@ import { create, createStore } from "zustand";
 import "@/services/http/axios.config";
 import { getUserDataOutOfReact } from "@/hooks/useUserCredentials";
 
-type UserCredentials = {
+export type UserCredentials = {
   email: string;
   first_name: string;
   image_url: string;
