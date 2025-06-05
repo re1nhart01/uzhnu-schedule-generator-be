@@ -92,4 +92,4 @@ class AuthenthicateAdmin(APIView):
         if user.role != "admin":
             return Response({"error": "User is not an admin"}, status=403)
         login(request, user)
-        return HttpResponseRedirect("/admin/")  # Redirect to the admin page after successful login
+        return Response({"success": True, "message": "Logged in successfully"})
