@@ -3,7 +3,6 @@ from django.urls import path
 from schedule.views import GenerateScheduleManuallyView, GenerateScheduleView, SaveScheduleView, ScheduleHistoryView, TeacherSubjectView, SchedulesByDatesView, CreateBatchUnavailableSlotsView
 
 urlpatterns = [
-    path("generate-schedule/", GenerateScheduleView.as_view(), name="generate_schedule"),
     path("generate-schedule/manually/", GenerateScheduleManuallyView.as_view(), name="generate_schedule_manual"),
     path("save/", SaveScheduleView.as_view(), name="save_schedule"),
     path("history/", ScheduleHistoryView.as_view(), name="schedule_history"),

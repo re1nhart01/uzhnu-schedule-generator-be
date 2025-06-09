@@ -461,12 +461,19 @@ class CreateBatchUnavailableSlotsView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=500)
         
+    @transaction.atomic
     def post(self, request):
         data = request.data.get("unavailable_slots", [])
         if not data:
             return Response({"error": "No unavailable slots provided"}, status=400)
 
         created_slots = []
+        # remove all slots for the user by id
+        user = request.user
+        if not user.is_authenticated:
+            return Response({"error": "Permission denied"}, status=403)
+        existant_slots = TeacherUnavailableSlot.objects.filter(teacher=user)
+        existant_slots.delete()
         for slot in data:
             try:
                 teacher_email = slot.get("teacher_email")

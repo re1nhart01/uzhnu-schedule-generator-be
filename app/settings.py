@@ -186,8 +186,8 @@ REST_FRAMEWORK = {
 
 # Swagger
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
+    'TITLE': 'Schedule Generator API',
+    'DESCRIPTION': 'API for generating and managing schedules',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': True,
     'SECURITY': [
