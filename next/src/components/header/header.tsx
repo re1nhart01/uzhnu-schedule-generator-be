@@ -1,13 +1,6 @@
 "use client";
 
 import { HEADER_HEIGHT } from "@/constants/constants";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -26,13 +19,14 @@ import { useTheme } from "next-themes";
 import { LogOut, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 
-type headerProps = object;
+type headerProps = {
+    accessTokenCookie?: string;
+};
 
-export const Header: FC<headerProps> = () => {
+export const Header: FC<headerProps> = ({ accessTokenCookie }) => {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
   const { userData, setNullUserData } = useGoogleAuthStore();
-  const { removeItems } = useUserCredentials();
+  const { removeItems } = useUserCredentials(accessTokenCookie);
   const router = useRouter();
 
   const [hasAdminSession, setHasAdminSession] = useState(false);
@@ -49,6 +43,10 @@ export const Header: FC<headerProps> = () => {
     setNullUserData();
     router.push("/");
   };
+
+    useEffect(() => {
+
+    }, []);
 
   const handleLogoutAdmin = async () => {
     try {

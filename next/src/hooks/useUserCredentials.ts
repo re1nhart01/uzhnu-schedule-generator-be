@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-export const useUserCredentials = () => {
+export const useUserCredentials = (tokenFromCookies = "") => {
   const [access, setAccess] = useState("");
   const [refresh, setRefresh] = useState("");
 
@@ -10,10 +10,14 @@ export const useUserCredentials = () => {
     const data = sessionStorage.getItem("USER_DATA");
     if (data) {
       const { access_token, refresh_token } = JSON.parse(data);
-      setAccess(access);
-      setRefresh(refresh);
+      setAccess(access_token);
+      setRefresh(refresh_token);
     }
-  }, []);
+    if (tokenFromCookies) {
+        setAccess(tokenFromCookies);
+    }
+
+  }, [tokenFromCookies]);
 
   const removeItems = useCallback(() => {
     sessionStorage.removeItem("USER_DATA");
