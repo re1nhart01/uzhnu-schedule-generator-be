@@ -22,7 +22,7 @@ class ScheduleLesson(BaseModel):
     auditory: Optional[str] = None
 
 class ScheduleDay(BaseModel):
-    day: Literal["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    day: Literal["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     lessons: list[ScheduleLesson | None]
 
 class ScheduleClass(BaseModel):
