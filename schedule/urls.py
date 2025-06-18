@@ -1,6 +1,6 @@
 from django.urls import path
 
-from schedule.views import GenerateScheduleManuallyView, GenerateScheduleView, SaveScheduleView, ScheduleHistoryView, TeacherSubjectView, SchedulesByDatesView, CreateBatchUnavailableSlotsView
+from schedule.views import GenerateScheduleManuallyView, SaveScheduleView, ScheduleHistoryView, TeacherSubjectView, SchedulesByDatesView, CreateBatchUnavailableSlotsView
 
 urlpatterns = [
     path("generate-schedule/manually/", GenerateScheduleManuallyView.as_view(), name="generate_schedule_manual"),

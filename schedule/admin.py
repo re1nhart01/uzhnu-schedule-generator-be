@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subject, Class, TeacherSubject, ClassSubject, TeacherUnavailableSlot, TeacherUnavailableTime, Faculty
+from .models import Auditory, Subject, Class, TeacherSubject, ClassSubject, TeacherUnavailableSlot, TeacherUnavailableTime, Faculty
 
 # Register your models here.
 
@@ -9,6 +9,7 @@ admin.site.register(Faculty)
 admin.site.register(TeacherSubject)
 admin.site.register(ClassSubject)
 admin.site.register(TeacherUnavailableSlot)
+admin.site.register(Auditory)
 
 admin.site.site_title = "Schedule Admin"
 admin.site.site_header = "Schedule Administration"
